@@ -1,52 +1,47 @@
 set nocompatible
 filetype off
 
-"Vundle
-set rtp+=~/.vim/bundle/Vundle.vim
 
-"Vundle 初始化
-call vundle#begin()
-
-"第一个
-Plugin 'gmarik/Vundle.vim'
+"Plug 初始化
+call plug#begin('~/.vim/plugged')
 
 "git in vim
-Plugin 'tpope/vim-fugitive'
-
-"L9
-Plugin 'L9'
+Plug 'tpope/vim-fugitive'
 
 "文件类型侦测
 filetype plugin indent on
 
 "补全神器 YouCompleteMe
-Bundle 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe', {'do':'./install.py --all'}
+
+"定义跳转ctags
+Plug 'ludovicchabant/vim-gutentags'
 
 "markdown 插件
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 
 "状态栏增强
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 "中英文排版
-Bundle 'hotoo/pangu.vim'
+Plug 'hotoo/pangu.vim'
 
 "路径搜索
-Plugin 'kien/ctrlp.vim'
+Plug 'kien/ctrlp.vim'
 
 "树形目录
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 
 "代码总览
-Plugin 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 
 "语法检查
-Plugin 'vim-syntastic/syntastic'
+Plug 'vim-syntastic/syntastic'
 
 "结束
-call vundle#end()
+call plug#end()
 
 "TAB转空格
 set softtabstop=4
