@@ -41,6 +41,9 @@ Plug 'majutsushi/tagbar'
 "语法检查
 Plug 'w0rp/ale'
 
+"字体符号
+Plug 'ryanoasis/vim-devicons'
+
 "结束
 call plug#end()
 
