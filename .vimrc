@@ -53,6 +53,9 @@ Plug 'dense-analysis/ale'
 "图标
 Plug 'ryanoasis/vim-devicons'
 
+"字体符号
+Plug 'ryanoasis/vim-devicons'
+
 "结束
 call plug#end()
 
