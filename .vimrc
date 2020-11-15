@@ -14,18 +14,20 @@ filetype plugin indent on
 
 "补全神器 YouCompleteMe
 "Plug 'Valloric/YouCompleteMe', {'do':'./install.py --all'}
-Plug 'zxqfl/tabnine-vim'
+"Plug 'zxqfl/tabnine-vim'
 
 "定义跳转ctags
 Plug 'universal-ctags/ctags'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+"Plug 'autozimu/LanguageClient-neovim', {
+"    \ 'branch': 'next',
+"    \ 'do': 'bash install.sh',
+"    \ }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " (Optional) Multi-entry selection UI.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 "markdown 插件
 Plug 'godlygeek/tabular'
@@ -48,7 +50,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 
 "语法检查
-Plug 'dense-analysis/ale'
+"Plug 'dense-analysis/ale'
 
 "图标
 Plug 'ryanoasis/vim-devicons'
@@ -56,17 +58,23 @@ Plug 'ryanoasis/vim-devicons'
 "字体符号
 Plug 'ryanoasis/vim-devicons'
 
+"修改字符串
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+
 "结束
 call plug#end()
 
 "256色
 set t_Co=256
 
+"缓冲区切换改为tab
+set switchbuf=usetab,newtab
 
 "TAB转空格
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 
 "自动补全
@@ -117,33 +125,33 @@ autocmd BufWritePre *.markdown,*.md,*.text,*.txt,*.wiki,*.cnx call PanGuSpacing(
 
 "语法检查配置
 
-let g:ale_completion_enabled = 1
-
-let g:ale_sign_column_always = 1
-let g:ale_linters_explicit = 0
-let g:ale_completion_delay = 500
-let g:ale_echo_delay = 20
-let g:ale_lint_delay = 500
-let g:ale_sign_error = '✗'
-let g:ale_sign_warning = '⚠'
-let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
-let g:ale_echo_msg_format = '[%linter%] %code: %%s'
-let g:ale_lint_on_text_changed = 'always'
-let g:ale_lint_on_insert_leave = 1
-let g:airline#extensions#ale#enabled = 1
-let g:airline#extensions#ale#error_symbol = '✗'
-let g:airline#extensions#ale#warning_symbol = '⚠'
-
-let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
-let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++11'
-let g:ale_c_cppcheck_options = ''
-let g:ale_cpp_cppcheck_options = ''
-
-let g:ale_fixers = {
-\   'go' : ['gofmt'],
-\   'python' : ['autopep8'],
-\   'cpp' : ['clang-format'],
-\}
+"let g:ale_completion_enabled = 1
+"
+"let g:ale_sign_column_always = 1
+"let g:ale_linters_explicit = 0
+"let g:ale_completion_delay = 500
+"let g:ale_echo_delay = 20
+"let g:ale_lint_delay = 500
+"let g:ale_sign_error = '✗'
+"let g:ale_sign_warning = '⚠'
+"let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
+"let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+"let g:ale_lint_on_text_changed = 'always'
+"let g:ale_lint_on_insert_leave = 1
+"let g:airline#extensions#ale#enabled = 1
+"let g:airline#extensions#ale#error_symbol = '✗'
+"let g:airline#extensions#ale#warning_symbol = '⚠'
+"
+"let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+"let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++11'
+"let g:ale_c_cppcheck_options = ''
+"let g:ale_cpp_cppcheck_options = ''
+"
+"let g:ale_fixers = {
+"\   'go' : ['gofmt'],
+"\   'python' : ['autopep8'],
+"\   'cpp' : ['clang-format'],
+"\}
 
 "let g:syntastic_always_populate_loc_list = 1
 "let g:syntastic_auto_loc_list = 1
@@ -169,7 +177,7 @@ let g:airline_powerline_fonts = 1
 
 "let $GTAGSLABEL = 'native-pygments'
 let $GTAGSLABEL='native'
-let $GTAGSCONF = '/data/home/wenkiwqwu/.local/share/gtags/gtags.conf'
+let $GTAGSCONF = expand('~/.local/share/gtags/gtags.conf')
 
 "ctags查找路径
 set tags=./.tags;,.tags
@@ -208,20 +216,81 @@ let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 
 let g:gutentags_file_list_command = 'find . -type f -name *.cc -o -type f -name *.h'
 
-let g:LanguageClient_loadSettings = 1
-let g:LanguageClient_diagnosticsEnable = 0
-let g:LanguageClient_settingsPath = expand('~/.vim/languageclient.json')
-"let g:LanguageClient_selectionUI = 'quickfix'
-let g:LanguageClient_diagnosticsList = v:null
-"let g:LanguageClient_hoverPreview = 'Never'
-let g:LanguageClient_serverCommands = {}
-let g:LanguageClient_serverCommands.c = ['cquery']
-let g:LanguageClient_serverCommands.cpp = ['cquery']
-
-noremap <leader>rd :call LanguageClient#textDocument_definition()<cr>
-noremap <leader>rr :call LanguageClient#textDocument_references()<cr>
-noremap <leader>rv :call LanguageClient#textDocument_hover()<cr>
+"let g:LanguageClient_loadSettings = 1
+"let g:LanguageClient_diagnosticsEnable = 0
+"let g:LanguageClient_settingsPath = expand('~/.vim/languageclient.json')
+""let g:LanguageClient_selectionUI = 'quickfix'
+"let g:LanguageClient_dignosticsList = 'Quickfix'
+""let g:LanguageClient_hoverPreview = 'Never'
+"let g:LanguageClient_serverCommands = {}
+"let g:LanguageClient_serverCommands.c = ['cquery']
+"let g:LanguageClient_serverCommands.cpp = ['cquery']
+"let g:LanguageClient_serverCommands.go = ['gopls']
+"
+"noremap <leader>rd :call LanguageClient#textDocument_definition()<CR>
+"noremap <leader>rr :call LanguageClient#textDocument_rename()<CR>
+"noremap <leader>rf :call LanguageClient#textDocument_formatting()<CR>
+"noremap <leader>rt :call LanguageClient#textDocument_typeDefinition()<CR>
+"noremap <leader>rx :call LanguageClient#textDocument_references()<CR>
+"noremap <leader>ra :call LanguageClient_workspace_applyEdit()<CR>
+"noremap <leader>rc :call LanguageClient#textDocument_completion()<CR>
+"noremap <leader>rh :call LanguageClient#textDocument_hover()<CR>
+"noremap <leader>rs :call LanguageClient_textDocument_documentSymbol()<CR>
+"noremap <leader>rm :call LanguageClient_contextMenu()<CR>
 
 augroup filetype
     autocmd! BufRead,BufNewFile BUILD set filetype=blade
 augroup end
+
+noremap <leader>ca :cs find a <C-R>=expand("<cword>")<CR><CR>
+noremap <leader>cc :cs find c <C-R>=expand("<cword>")<CR><CR>
+noremap <leader>cd :cs find d <C-R>=expand("<cword>")<CR><CR>
+noremap <leader>ce :cs find e <C-R>=expand("<cword>")<CR><CR>
+noremap <leader>cf :cs find f <C-R>=expand("<cfile>")<CR><CR>
+noremap <leader>cg :cs find g <C-R>=expand("<cword>")<CR><CR>
+noremap <leader>ci :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+noremap <leader>cs :cs find s <C-R>=expand("<cword>")<CR><CR>
+noremap <leader>ct :cs find t <C-R>=expand("<cword>")<CR><CR>
+
+set notimeout
+
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>rn <Plug>(coc-rename)
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Remap for do codeAction of selected region
+function! s:cocActionsOpenFromSelected(type) abort
+  execute 'CocCommand actions.open ' . a:type
+endfunction
+xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
+nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
