@@ -27,6 +27,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " (Optional) Multi-entry selection UI.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 "markdown 插件
 Plug 'godlygeek/tabular'
@@ -60,12 +61,18 @@ Plug 'ryanoasis/vim-devicons'
 "调试界面
 Plug 'puremourning/vimspector'
 
+"修改字符串
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+
 "结束
 call plug#end()
 
 "256色
 set t_Co=256
 
+"缓冲区切换改为tab
+set switchbuf=usetab,newtab
 
 "TAB转空格
 set tabstop=2
@@ -150,6 +157,7 @@ autocmd BufWritePre *.markdown,*.md,*.text,*.txt,*.wiki,*.cnx call PanGuSpacing(
 "\       'directory': '/home/wenkiwqwu/.cache/${project_root}/.cquery_cache'
 "\   }
 "\ }
+"
 "let g:ale_fixers = {
 "\   'go' : ['gofmt'],
 "\   'python' : ['autopep8'],
@@ -223,13 +231,13 @@ let g:gutentags_file_list_command = 'find . -type f -name *.cc -o -type f -name 
 "let g:LanguageClient_diagnosticsEnable = 0
 "let g:LanguageClient_settingsPath = expand('~/.vim/languageclient.json')
 ""let g:LanguageClient_selectionUI = 'quickfix'
-"let g:LanguageClient_diagnosticsList = v:null
+"let g:LanguageClient_dignosticsList = 'Quickfix'
 ""let g:LanguageClient_hoverPreview = 'Never'
 "let g:LanguageClient_serverCommands = {}
 "let g:LanguageClient_serverCommands.c = ['ccls']
 "let g:LanguageClient_serverCommands.cpp = ['ccls']
 "", '--init={:"cacheDirectory":"/home/wenkiwqwu/.cache/${project_root}/.cquery_cache"}'
-"let g:LanguageClient_loggingFile = expand('~/.vim/LanguageClient.log')
+"let g:LanguageClient_serverCommands.go = ['gopls']
 "
 "noremap <leader>rd :call LanguageClient#textDocument_definition()<CR>
 "noremap <leader>rr :call LanguageClient#textDocument_rename()<CR>
@@ -242,6 +250,10 @@ let g:gutentags_file_list_command = 'find . -type f -name *.cc -o -type f -name 
 "noremap <leader>rs :call LanguageClient_textDocument_documentSymbol()<CR>
 "noremap <leader>rm :call LanguageClient_contextMenu()<CR>
 
+augroup filetype
+    autocmd! BufRead,BufNewFile BUILD set filetype=blade
+augroup end
+
 noremap <leader>ca :cs find a <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>cc :cs find c <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>cd :cs find d <C-R>=expand("<cword>")<CR><CR>
@@ -252,9 +264,7 @@ noremap <leader>ci :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 noremap <leader>cs :cs find s <C-R>=expand("<cword>")<CR><CR>
 noremap <leader>ct :cs find t <C-R>=expand("<cword>")<CR><CR>
 
-augroup filetype
-    autocmd! BufRead,BufNewFile BUILD set filetype=blade
-augroup end
+set notimeout
 
 " use <tab> for trigger completion and navigate to the next complete item
 function! s:check_back_space() abort
