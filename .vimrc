@@ -4,7 +4,7 @@ filetype off
 
 
 "Plug 初始化
-call plug#begin('~/.vim/plugged')
+call plug#begin(expand('~/.vim/plugged'))
 
 "git in vim
 Plug 'tpope/vim-fugitive'
@@ -58,6 +58,9 @@ Plug 'ryanoasis/vim-devicons'
 "字体符号
 Plug 'ryanoasis/vim-devicons'
 
+"调试界面
+Plug 'puremourning/vimspector'
+
 "修改字符串
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -91,6 +94,8 @@ set hlsearch
 
 "行号
 set nu
+
+set notimeout
 
 "普通模式取消输入法（目前 wsl 下好像无效）
 set imdisable
@@ -146,6 +151,12 @@ autocmd BufWritePre *.markdown,*.md,*.text,*.txt,*.wiki,*.cnx call PanGuSpacing(
 "let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++11'
 "let g:ale_c_cppcheck_options = ''
 "let g:ale_cpp_cppcheck_options = ''
+"
+"let g:ale_cpp_ccls_init_options = {
+"\   'cache': {
+"\       'directory': '/home/wenkiwqwu/.cache/${project_root}/.cquery_cache'
+"\   }
+"\ }
 "
 "let g:ale_fixers = {
 "\   'go' : ['gofmt'],
@@ -223,8 +234,9 @@ let g:gutentags_file_list_command = 'find . -type f -name *.cc -o -type f -name 
 "let g:LanguageClient_dignosticsList = 'Quickfix'
 ""let g:LanguageClient_hoverPreview = 'Never'
 "let g:LanguageClient_serverCommands = {}
-"let g:LanguageClient_serverCommands.c = ['cquery']
-"let g:LanguageClient_serverCommands.cpp = ['cquery']
+"let g:LanguageClient_serverCommands.c = ['ccls']
+"let g:LanguageClient_serverCommands.cpp = ['ccls']
+"", '--init={:"cacheDirectory":"/home/wenkiwqwu/.cache/${project_root}/.cquery_cache"}'
 "let g:LanguageClient_serverCommands.go = ['gopls']
 "
 "noremap <leader>rd :call LanguageClient#textDocument_definition()<CR>
@@ -276,6 +288,8 @@ nmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>rn <Plug>(coc-rename)
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+let g:vimspector_enable_mappings='HUMAN'
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
