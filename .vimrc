@@ -50,7 +50,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 
 "语法检查
-"Plug 'dense-analysis/ale'
+Plug 'dense-analysis/ale'
 
 "图标
 Plug 'ryanoasis/vim-devicons'
@@ -129,6 +129,24 @@ autocmd BufWritePre *.markdown,*.md,*.text,*.txt,*.wiki,*.cnx call PanGuSpacing(
 "autocmd vimenter * NERDTree
 
 "语法检查配置
+
+"let g:ale_sign_column_always = 1
+let g:ale_linters_explicit = 1
+"let g:ale_completion_delay = 500
+"let g:ale_echo_delay = 20
+let g:ale_lint_delay = 500
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚠'
+let g:ale_statusline_format = ['✗ %d', '⚡  %d', '✔ OK']
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+"let g:ale_lint_on_text_changed = 'always'
+let g:ale_lint_on_insert_leave = 1
+let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#ale#error_symbol = '✗'
+let g:airline#extensions#ale#warning_symbol = '⚠'
+let g:ale_linters = {
+\   'go': ['revive'],
+\}
 
 "let g:ale_completion_enabled = 1
 "
@@ -312,3 +330,6 @@ nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<C
 set updatetime=300
 au CursorHold * sil call CocActionAsync('highlight')
 au CursorHoldI * sil call CocActionAsync('showSignatureHelp')
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
